@@ -14,7 +14,7 @@ export class ProductsService {
         const existingSku = await this.prisma.product.findUnique({
             where: { sku: createProductDto.sku }
         })
-        if (!existingSku) {
+        if (existingSku) {
             throw new ConflictException(
                 `Product with SKU ${createProductDto.sku} already exists`
             )
@@ -93,7 +93,7 @@ export class ProductsService {
         if(!existingProduct){
             throw new NotFoundException('Product not found')
         }
-        if(updateProductDto.sku && updateProductDto.sku !== existingProduct.sku){
+        if(updateProductDto && updateProductDto.sku !== existingProduct.sku){
             const skuTaken = await this.prisma.product.findUnique({
                 where : {sku: updateProductDto.sku}
             })
@@ -102,7 +102,7 @@ export class ProductsService {
             }
         }
         const updateData: Prisma.ProductUpdateInput = {...updateProductDto}
-        if(updateProductDto.price !== undefined){
+        if(updateProductDto && updateProductDto.price !== undefined){
             updateData.price = new Prisma.Decimal(updateProductDto.price);
         }
 

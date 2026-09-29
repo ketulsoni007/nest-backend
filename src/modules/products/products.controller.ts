@@ -110,7 +110,7 @@ export class ProductsController {
         status:409,
         description: "Sku already exists"
     })
-    async update(@Param('id') id:string, updateProductDto: UpdateProductDto): Promise<ProductResponseDto>{
+    async update(@Param('id') id:string,@Body() updateProductDto: UpdateProductDto): Promise<ProductResponseDto>{
         return this.productService.update(id, updateProductDto)
     }
 
