@@ -7,6 +7,8 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module.js';
 import { CategoryModule } from './modules/category/category.module.js';
 import { ProductsModule } from './modules/products/products.module.js';
+import { OrdersModule } from './modules/orders/orders.module.js';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -14,11 +16,18 @@ import { ProductsModule } from './modules/products/products.module.js';
       isGlobal: true,
       envFilePath: '.env'
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60,
+        limit: 10
+      }
+    ]),
     PrismaModule,
     AuthModule,
     UsersModule,
     CategoryModule,
-    ProductsModule
+    ProductsModule,
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],
