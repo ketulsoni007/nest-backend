@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, IsString } from "class-validator";
 
 export enum OrderStatus {
   PENDING = 'PENDING',
@@ -21,4 +21,8 @@ export class QueryOrderDto {
     @IsOptional()
     @Type(() => Number)
     status?: OrderStatus;
+
+    @IsOptional()
+    @IsString()
+    search?:string;
 }
