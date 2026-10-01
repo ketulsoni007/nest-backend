@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags, ApiTooManyRequestsResponse, getSchemaPath } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../common/guard/jwt-auth-guard.js';
 import { RolesGuard } from '../../common/guard/roles.guard.js';
@@ -187,5 +187,72 @@ export class OrdersController {
     })
     async updateAdmin(@Param('id') id:string, @Body() dto: UpdateOrderDto){
         return await this.orderService.update(id, dto)
+    }
+
+    @Patch(':id')
+    @ModerateThrottle()
+    @ApiOperation({
+        summary: 'Update an order for current user'
+    })
+    @ApiParam({
+        name: 'id',
+        description: 'Order ID'
+    })
+    @ApiBody({
+        type: UpdateOrderDto
+    })
+    @ApiOkResponse({
+        description: 'Order updated successfully',
+        type: OrderApiResponseDto
+    })
+    @ApiNotFoundResponse({
+        description: 'Order not found'
+    })
+    async update(@Param('id') id:string, @Body() dto: UpdateOrderDto, @GetUser('id') userId:string){
+        return await this.orderService.update(id, dto, userId)
+    }
+
+    @Delete('admin/:id')
+    @Roles(Role.ADMIN)
+    @ModerateThrottle()
+    @ApiOperation({
+        summary: "[ADMIN] cancel order by ID"
+    })
+    @ApiParam({
+        name: 'id',
+        description: 'Order ID'
+    })
+    @ApiOkResponse({
+        description: 'Order cancelled successfully',
+        type: OrderApiResponseDto
+    })
+    @ApiNotFoundResponse({
+        description: 'Order not found'
+    })
+    @ApiForbiddenResponse({
+        description: 'Admin access required'
+    })
+    async cancelAdmin(@Param('id') id:string){
+        return await this.orderService.cancel(id)
+    }
+
+    @Delete(':id')
+    @ModerateThrottle()
+    @ApiOperation({
+        summary: "User cancel order by ID"
+    })
+    @ApiParam({
+        name: 'id',
+        description: 'Order ID'
+    })
+    @ApiOkResponse({
+        description: 'Order cancelled successfully',
+        type: OrderApiResponseDto
+    })
+    @ApiNotFoundResponse({
+        description: 'Order not found'
+    })
+    async cancel(@Param('id') id:string, @GetUser('id') userId:string){
+        return await this.orderService.cancel(id, userId)
     }
 }
