@@ -162,7 +162,7 @@ model Payment {
   id String @id @default(uuid())
   amount Decimal @db.Decimal(10,2)
   status PaymentStatus @default(PENDING)
-  currency String @default("usd")
+  currency String @default("INR")
   paymentMethod String?
   transactionId String?
   userId String

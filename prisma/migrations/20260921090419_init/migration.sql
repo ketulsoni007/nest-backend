@@ -109,7 +109,7 @@ CREATE TABLE "payments" (
     "id" TEXT NOT NULL,
     "amount" DECIMAL(10,2) NOT NULL,
     "status" "PaymentStatus" NOT NULL DEFAULT 'PENDING',
-    "currency" TEXT NOT NULL DEFAULT 'usd',
+    "currency" TEXT NOT NULL DEFAULT 'INR
     "paymentMethod" TEXT,
     "transactionId" TEXT,
     "userId" TEXT NOT NULL,
