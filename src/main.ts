@@ -17,11 +17,11 @@ async function bootstrap() {
     })
   );
   app.enableCors({
-    origin:process.env.ALLOWED_ORIGINS?.split(',') ?? 'http://localhost:3000',
-    credentials:true,
+    origin: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders:['Content-Type', 'Authorization', 'Accept']
-  })
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  });
   const config = new DocumentBuilder()
   .setTitle('API Documentation')
   .setDescription('API Documentation for the application')
