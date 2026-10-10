@@ -28,7 +28,7 @@ async function bootstrap() {
   });
 
   const apiBaseUrl =
-    process.env.API_BASE_URL ?? 'http://localhost:8080';
+    process.env.NODE_ENV === 'development' ? `http://localhost:${8080}` : process.env.API_BASE_URL ?? `http://localhost:${8080}`;
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')

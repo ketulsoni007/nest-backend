@@ -33,6 +33,7 @@ export class AuthController {
         description: 'Too Many Requests. Rate limit exceeded'
     })
     async register(@Body() registerDto: RegisterDto) : Promise<AuthResponseDto>{
+        console.log("REGISTER :")
         return this.authService.register(registerDto)
     }
     
